@@ -1,0 +1,149 @@
+/* Importando uma fonte bonita (Opcional, mas dá um toque profissional) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+/* --- Variáveis de Cor (Decisão de Sênior) --- */
+/* Isso facilita manter o design consistente. */
+:root {
+    --bg-color: #2a2138; /* Fundo roxo escuro da página */
+    --container-color: #1e1529c5; /* Cor do container de login */
+    --primary-purple: #8e44ad; /* Roxo principal (botão) */
+    --text-color: #f0f0f0; /* Cor do texto principal */
+    --text-secondary: #a0a0a0; /* Cor do texto secundário (links) */
+    --input-bg: #2b213f; /* Fundo do input */
+    --input-border: #4a3f5a; /* Borda do input */
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    background-image: url('https://www.transparenttextures.com/patterns/swirl.png'); /* Textura sutil do fundo, como na imagem */
+    color: var(--text-color);
+    min-height: 100vh; /* Garante que o body ocupe a tela toda */
+}
+
+.login-container {
+    background-color: var(--container-color);
+    padding: 2.5rem;
+    border-radius: 20px; /* Cantos arredondados */
+    width: 100%;
+    max-width: 450px; /* Largura máxima do modal */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.login-title {
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+.btn-close-custom {
+    background-color: var(--input-bg);
+    border: none;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+.btn-close-custom:hover {
+    background-color: var(--input-border);
+    color: var(--text-color);
+}
+
+/* --- Estilização do Formulário (Override do Bootstrap) --- */
+
+.form-group {
+    position: relative;
+}
+
+/* Truque para o label "flutuante" */
+.form-control {
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    color: var(--text-color);
+    border-radius: 10px; /* Cantos arredondados do input */
+    padding: 1.5rem 1rem 0.5rem 1rem; /* Padding para o label flutuante */
+    height: 58px;
+}
+
+.form-control::placeholder {
+    color: transparent; /* Esconde o placeholder padrão */
+}
+
+/* Quando o input está focado ou preenchido */
+.form-control:focus,
+.form-control:not(:placeholder-shown) {
+    background-color: var(--input-bg);
+    border-color: var(--primary-purple);
+    color: var(--text-color);
+    box-shadow: none;
+}
+
+.form-group label {
+    position: absolute;
+    top: 17px;
+    left: 1rem;
+    color: var(--text-secondary);
+    pointer-events: none;
+    transition: all 0.2s ease-out;
+}
+
+/* Animação do label */
+.form-control:focus + label,
+.form-control:not(:placeholder-shown) + label {
+    top: 7px;
+    font-size: 0.75rem;
+    color: var(--primary-purple);
+}
+
+.password-toggle-icon {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    cursor: pointer;
+    z-index: 100;
+}
+.password-toggle-icon:hover {
+    color: var(--text-color);
+}
+
+.forgot-password-link,
+.signup-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+.forgot-password-link:hover,
+.signup-link:hover {
+    color: var(--text-color);
+    text-decoration: underline;
+}
+
+.login-footer p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.btn-login {
+    background: linear-gradient(90deg, #8e44ad, #9b59b6); /* Gradiente do botão */
+    border: none;
+    color: white;
+    padding: 0.75rem;
+    font-weight: 500;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(142, 68, 173, 0.3);
+}
+.btn-login:hover {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(142, 68, 173, 0.4);
+}

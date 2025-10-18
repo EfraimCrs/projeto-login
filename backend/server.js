@@ -27,11 +27,10 @@ app.get('/api/health', (req, res) => {
 
 // --- Inicialização do Servidor ---
 app.listen(PORT, () => {
-    console.log(`[Servidor Backend] Rodando na porta ${PORT}`);
+    console.log(`[✅ Servidor Backend] Rodando na porta ${PORT}`);
     if (DEBUG_MODE) {
-      console.log("[Servidor Backend] Modo DEBUG ATIVADO.");
+      console.log("[🌐 Servidor Backend] Modo DEBUG ATIVADO.");
     }
 });
-
 
 
