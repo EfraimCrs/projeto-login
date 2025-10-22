@@ -1,39 +1,77 @@
+
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- Lógica para Mostrar/Esconder Senha ---
     const passwordField = document.getElementById('password');
     const toggleIcon = document.querySelector('.password-toggle-icon i');
 
     if (toggleIcon) {
         toggleIcon.addEventListener('click', () => {
-            // Verifica se o campo é do tipo 'password'
             if (passwordField.type === 'password') {
-                // Muda para 'text' (mostra a senha)
                 passwordField.type = 'text';
-                // Muda o ícone para "olho cortado"
                 toggleIcon.classList.remove('bi-eye-fill');
                 toggleIcon.classList.add('bi-eye-slash-fill');
             } else {
-                // Muda de volta para 'password' (esconde a senha)
                 passwordField.type = 'password';
-                // Muda o ícone de volta para "olho"
                 toggleIcon.classList.remove('bi-eye-slash-fill');
                 toggleIcon.classList.add('bi-eye-fill');
             }
         });
     }
 
-    // --- Lógica do Formulário (Faremos na Fase 4) ---
     const loginForm = document.getElementById('loginForm');
+    const emailField = document.getElementById('email');
+    
+    const loginButton = loginForm.querySelector('button[type="submit"]');
+    const errorAlert = document.getElementById('error-alert');
+
     if (loginForm) {
-        loginForm.addEventListener('submit', (event) => {
-            // Impede o comportamento padrão do formulário (que é recarregar a página)
+        
+        loginForm.addEventListener('submit', async (event) => {
+            
             event.preventDefault(); 
             
-            console.log("Formulário enviado! (Mas ainda não conectado ao backend)");
+            const originalButtonText = loginButton.innerHTML; 
+            loginButton.disabled = true;
+            loginButton.innerHTML = `
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Entrando...
+            `;
             
-            // Aqui, na Fase 4, chamaremos o axios.
+            errorAlert.classList.add('d-none');
+
+            try {
+                
+                const email = emailField.value;
+                const password = passwordField.value;
+
+                const data = await apiService.login(email, password);
+
+                console.log("Login bem-sucedido!", data);
+
+                loginButton.innerHTML = "Sucesso!";
+                loginButton.classList.remove('btn-login'); 
+                loginButton.classList.add('btn-success'); 
+
+                setTimeout(() => {
+                    alert(`Login bem-sucedido! Bem-vindo, ${data.user.email}`);
+                    
+                    loginForm.reset();
+                    loginButton.disabled = false;
+                    loginButton.innerHTML = originalButtonText;
+                    loginButton.classList.remove('btn-success');
+                    loginButton.classList.add('btn-login');
+                }, 1500); 
+
+            } catch (error) {
+                
+                console.error("Falha no login:", error.message);
+                
+                errorAlert.textContent = error.message; 
+                errorAlert.classList.remove('d-none');
+
+                loginButton.disabled = false;
+                loginButton.innerHTML = originalButtonText;
+            }
         });
     }
-
 });

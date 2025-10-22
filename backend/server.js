@@ -1,22 +1,20 @@
-require('dotenv').config();
+require('dotenv').config(); 
 
 const express = require('express');
 const cors = require('cors');
+// Importa nosso arquivo de rotas de autenticação
+const authRoutes = require('./src/routes/authRoutes');
 
-// cofig do App
+// --- Configuração do App ---
 const app = express();
-
-// Defina a Porta
 const PORT = process.env.PORT || 3001;
-
-// Define se estamos em modo de Debug
 const DEBUG_MODE = process.env.DEBUG === 'true' || false;
 
-// Middleware
+// --- Middlewares Essenciais ---
 app.use(cors());
 app.use(express.json());
 
-// Rota de Teste
+// --- Rotas ---
 app.get('/api/health', (req, res) => {
     res.json({
         status: "ok",
@@ -25,12 +23,15 @@ app.get('/api/health', (req, res) => {
     });
 });
 
+// --- NOVO: Use as rotas de autenticação ---
+// Qualquer requisição que comece com /api será gerenciada pelo 'authRoutes'
+app.use('/api', authRoutes);
+
 // --- Inicialização do Servidor ---
 app.listen(PORT, () => {
-    console.log(`[✅ Servidor Backend] Rodando na porta ${PORT}`);
+    console.log(`✅ [Servidor Backend] Rodando na porta ${PORT}`);
     if (DEBUG_MODE) {
-      console.log("[🌐 Servidor Backend] Modo DEBUG ATIVADO.");
+        console.log("✅ [Servidor Backend] Modo DEBUG ATIVADO.");
     }
+    // Mensagem do banco de dados (deve aparecer logo após o 'listen')
 });
-
-
