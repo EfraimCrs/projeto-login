@@ -48,6 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 console.log("Login bem-sucedido!", data);
 
+                if (data.token) {
+                    localStorage.setItem('authToken', data.token);
+                    console.log("token salvo no localStorage");
+                }
+
                 loginButton.innerHTML = "Sucesso!";
                 loginButton.classList.remove('btn-login'); 
                 loginButton.classList.add('btn-success'); 

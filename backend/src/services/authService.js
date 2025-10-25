@@ -1,8 +1,7 @@
-const db = require('../database/db'); // Nosso banco de dados
-const bcrypt = require('bcryptjs');   // Para criptografar e comparar senhas
+const db = require('../database/db');
+const bcrypt = require('bcryptjs');
 
 const authService = {
-    
     /**
      * Lógica para registrar um novo usuário
      */

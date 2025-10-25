@@ -1,15 +1,16 @@
 const express = require('express');
-const router = express.Router(); // Mini-aplicativo do Express para rotas
+const router = express.Router();
 const authController = require('../controllers/authController');
+const authMiddleware = require('../middleware/authMiddleware');
 
-// --- Definindo os Endpoints de Autenticação ---
-
-// Rota: POST /api/register
-// Chama o controlador 'register'
 router.post('/register', authController.register);
-
-// Rota: POST /api/login
-// Chama o controlador 'login'
 router.post('/login', authController.login);
+
+router.get('/profile', authMiddleware, (req, res) => {
+  res.status(200).json({
+    message: "Dados do perfil carregados com sucesso",
+    user: req.user
+  });
+});
 
 module.exports = router;

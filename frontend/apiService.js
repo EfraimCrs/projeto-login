@@ -1,39 +1,72 @@
-
-// 1. Criamos uma 'instância' do axios.
-// Isso é uma boa prática pois centraliza a URL base da nossa API.
 const api = axios.create({
-    baseURL: 'http://localhost:3001/api' // A porta do nosso backend
+    baseURL: 'http://localhost:3001/api'
 });
 
-// 2. Criamos nosso objeto de serviço.
-// O app.js vai chamar essas funções.
+api.interceptors.request.use(
+    (config) => {
+    
+        const token = localStorage.getItem('authToken');
+
+        if (token) {
+            
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        
+        return config;
+    }, 
+    (error) => {
+
+        return Promise.reject(error);
+    }
+);
+
 const apiService = {
     
     /**
      * Envia o email e senha para o endpoint /login
      * @param {string} email
      * @param {string} password
-     * @returns {Promise<object>} - Os dados da resposta (ex: { message, user })
+     * @returns {Promise<object>}
      */
     login: async (email, password) => {
         try {
-            // Faz a chamada POST para {baseURL}/login
-            const response = await api.post('/login', { email, password });
             
-            // Se der certo (Status 200), retorna os dados
-            // 'response.data' terá o JSON { message, user }
+            const response = await api.post('/login', { email, password });
             return response.data;
 
         } catch (error) {
-            // Se o backend retornar um erro (401, 500, etc), o axios vai 'rejeitar'
-            
-            // 'error.response.data' contém o JSON { message } que enviamos do backend
+
             if (error.response && error.response.data) {
-                // Lança um novo erro com a mensagem da API (ex: "Usuário ou senha inválidos.")
+                
                 throw new Error(error.response.data.message);
             } else {
-                // Erro de rede (backend desligado, etc)
+                
                 throw new Error("Não foi possível conectar ao servidor. Tente novamente.");
+            }
+        }
+    },
+
+    getProfile: async () => {
+        try {
+            // Agora, quando chamarmos api.get('/profile')...
+            // 1. O 'interceptor' vai rodar primeiro.
+            // 2. Vai pegar o token do localStorage.
+            // 3. Vai adicionar 'Authorization: Bearer <token>' no cabeçalho.
+            // 4. O backend vai receber o token, validar, e retornar 200 OK.
+            const response = await api.get('/profile');
+            return response.data;
+        } catch (error) {
+            // Se o token estiver expirado ou inválido, o backend retornará 400 ou 401
+            if (error.response && error.response.data) {
+                console.error("Erro ao buscar perfil:", error.response.data.message);
+                // Se o token for inválido, podemos apagar o token "ruim"
+                if(error.response.status === 400 || error.response.status === 401) {
+                    localStorage.removeItem('authToken');
+                    console.log("Token inválido removido do localStorage.");
+                }
+                throw new Error(error.response.data.message);
+            } else {
+                throw new Error("Erro de rede ao buscar dados do perfil.");
             }
         }
     },
