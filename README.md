@@ -35,7 +35,7 @@ dotenv,
 nodemon (dev),
 
 🚀 Como ExecutarPara rodar este projeto localmente, você precisará do Node.js (v16 ou superior) e do npm instalados.1. Backend (Servidor)Primeiro, clone o repositório e inicie o servidor:Bash# Clone este repositório
-git clone 
+git clone https://github.com/EfraimCrs/projeto-login.git
 
 # Navegue até a pasta do backend
 cd seu-repositorio/backend
